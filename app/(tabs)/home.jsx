@@ -10,16 +10,12 @@ import ExploreHeader from '../../components/flatLists'
 import AnimatedExploreBar from '../../components/animatedExploreBar'
 import ExploreCategory from '../../components/animatedExploreBar/exploreCategory'
 
-
-const HomeScreen = () => {
-
+export default function HomeScreen() {
   const [category, setCategory] = useState('hotel');
-
 
   const onDataChanged = (category) => {
     setCategory(category);
   };
-
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
@@ -30,7 +26,7 @@ const HomeScreen = () => {
         </View>
 
         <ScrollView className="flex container mb-28 h-full " showsHorizontalScrollIndicator={false} showsVerticalScrollIndicator={false}>
-            <ExploreCategory />
+          <ExploreCategory />
           <View>
             <View className="mb-5 mx-1 flex-row justify-between">
               <Text className="subpixel-antialiased text-lg font-bold">
@@ -77,7 +73,6 @@ const HomeScreen = () => {
           </View> */}
 
           <View>
-
             <View>
               <ExploreHeader onCategoryChanged={onDataChanged} />
               <ExploreFlatList category={category} />
@@ -87,7 +82,4 @@ const HomeScreen = () => {
       </View>
     </SafeAreaView>
   );
-};
-
-
-export default HomeScreen
+}

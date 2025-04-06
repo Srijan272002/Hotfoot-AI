@@ -253,10 +253,31 @@ const UnifiedSearchForm = ({ activeTab, onClose }) => {
 
     // Handle search button press
     const handleSearch = () => {
-        if (activeTab === 'Hotels') {
-            navigation.navigate('hotel/search');
-        } else if (activeTab === 'Flights') {
-            navigation.navigate('flight/search');
+        setIsTravelersDropdownOpen(false);
+        // Set all parameters in the Zustand store
+        setFromLocationToStore(fromLocation);
+        setToLocationToStore(toLocation);
+        setDatesToStore(dates);
+        setTravelersToStore(travelers);
+        setCabinClassToStore(cabinClass);
+        setTripTypeToStore(tripType);
+
+        // Navigate based on active tab
+        switch (activeTab) {
+            case 'Places':
+                navigation.navigate('place/cityDetails');
+                onClose();
+                break;
+            case 'Flights':
+                navigation.navigate('FlightDetails');
+                onClose();
+                break;
+            case 'Hotels':
+                navigation.navigate('hotel');
+                onClose();
+                break;
+            default:
+                console.warn('Unknown tab:', activeTab);
         }
     };
 

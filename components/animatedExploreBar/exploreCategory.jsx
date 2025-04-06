@@ -21,12 +21,12 @@ import TripSearchPage from '../tripSearch/tripSearch';
 import modalVisibility from '../modalVisiblity/modalvisiblity';
 import * as Haptics from 'expo-haptics';
 import { SearchModal } from './SearchModal';
+import { useRouter } from 'expo-router';
 
 // Create an AnimatedLinearGradient component
 const AnimatedLinearGradient = Animated.createAnimatedComponent(LinearGradient);
 
 const ExploreCategory = ({
-
     onCategorySelect,
     //   selectedCategory,
     //   style
@@ -39,13 +39,17 @@ const ExploreCategory = ({
 
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedTab, setSelectedTab] = useState('');
+    const router = useRouter();
 
     const handlePress = (tabName) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        setSelectedTab(tabName);
-        setModalVisible(true);
+        if (tabName === 'Hotels') {
+            router.push('/hotel');
+        } else {
+            setSelectedTab(tabName);
+            setModalVisible(true);
+        }
     };
-
 
     const categories = [
         {
@@ -67,7 +71,6 @@ const ExploreCategory = ({
             icon: Hotel,
         }
     ];
-
 
     return (
         <View style={[styles.categoriesContainer]}>

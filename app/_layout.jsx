@@ -28,7 +28,7 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack initialRouteName='onboarding/index' options={{ headerShown: false }}>
+    <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="onboarding/index" options={{ headerShown: false }} />
       <Stack.Screen name="auth/index" options={{ headerShown: false }} />
@@ -36,36 +36,22 @@ export default function RootLayout() {
       <Stack.Screen name="preferences/personalTouch" options={{ headerShown: false }} />
       <Stack.Screen name="preferences/allSet" options={{ headerShown: false }} />
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="hotel/[id]" options={{ headerShown: false, headerTitle: '' }} />
-      <Stack.Screen name="hotel/dummyPage" options={{ headerShown: false, headerTitle: '' }} />
-      <Stack.Screen name="place/cityDetails" options={{ headerShown: false, headerTitle: '' }} />
-      <Stack.Screen
-        name="hotel/search"
-        options={{
-          headerShown: true,
-          headerTitle: 'Search Hotels',
-          headerBackTitle: 'Back',
-        }}
+      <Stack.Screen 
+        name="hotel" 
+        options={{ 
+          headerShown: false,
+          presentation: 'modal'
+        }} 
       />
-      <Stack.Screen
-        name="hotel/results"
-        options={{
-          headerShown: true,
-          headerTitle: 'Hotel Results',
-          headerBackTitle: 'Back',
-        }}
+      <Stack.Screen 
+        name="hotel/[id]" 
+        options={{ 
+          headerShown: false,
+          presentation: 'card'
+        }} 
       />
-      <Stack.Screen
-        name="flight/search"
-        options={{
-          headerShown: true,
-          headerTitle: 'Search Flights',
-          headerBackTitle: 'Back',
-        }}
-      />
+      <Stack.Screen name="place/cityDetails" options={{ headerShown: false }} />
     </Stack>
-
-
   );
 }
 
