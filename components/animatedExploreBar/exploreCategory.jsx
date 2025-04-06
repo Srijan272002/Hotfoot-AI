@@ -81,7 +81,7 @@ const ExploreCategory = ({
                     onPress={() => handlePress(category.tab)}
                 >
                     <View style={styles.iconContainer}>
-                        {category.icon && <category.icon size={22} color="#000000" strokeWidth={2} />}
+                        {category.icon && <category.icon size={26} color="#000000" strokeWidth={2} />}
                     </View>
                     <Text style={styles.categoryLabel}>{category.label}</Text>
                     <Text style={styles.categoryDescription}>{category.description}</Text>
@@ -101,33 +101,33 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         paddingHorizontal: 16,
-        marginVertical: 16,
+        marginVertical: 20,
     },
     categoryButton: {
         alignItems: 'center',
-        width: '30%',
+        width: '32%',
     },
     iconContainer: {
-        width: 44,
-        height: 44,
-        borderRadius: 22,
+        width: 52,
+        height: 52,
+        borderRadius: 26,
         backgroundColor: '#F3F4F6',
         alignItems: 'center',
         justifyContent: 'center',
-        marginBottom: 8,
+        marginBottom: 10,
     },
     categoryLabel: {
-        fontSize: 13,
-        fontWeight: '500',
+        fontSize: 15,
+        fontWeight: '600',
         color: '#000000',
         marginBottom: 4,
         textAlign: 'center',
     },
     categoryDescription: {
-        fontSize: 11,
+        fontSize: 12,
         color: '#666666',
         textAlign: 'center',
-        lineHeight: 14,
+        lineHeight: 16,
     },
 });
 

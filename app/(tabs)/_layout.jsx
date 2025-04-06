@@ -15,7 +15,7 @@ const TabLayout = () => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: '400',
                   color: 'black',
                 }}
@@ -25,10 +25,10 @@ const TabLayout = () => {
               {focused && (
                 <View
                   style={{
-                    width: 6, // Dot size
-                    height: 6,
+                    width: 7, // Dot size
+                    height: 7,
                     backgroundColor: 'black',
-                    borderRadius: 3, // Circular dot
+                    borderRadius: 3.5, // Circular dot
                     marginTop: 4, // Space between label and dot
                   }}
                 />
@@ -38,7 +38,7 @@ const TabLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Feather
               name="search"
-              size={focused ? 26 : 20} // Zoom effect when focused
+              size={focused ? 28 : 22} // Zoom effect when focused
               color="black"
             />
           ),
@@ -53,7 +53,7 @@ const TabLayout = () => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: '400',
                   color: 'black',
                 }}
@@ -63,10 +63,10 @@ const TabLayout = () => {
               {focused && (
                 <View
                   style={{
-                    width: 6,
-                    height: 6,
+                    width: 7,
+                    height: 7,
                     backgroundColor: 'black',
-                    borderRadius: 3,
+                    borderRadius: 3.5,
                     marginTop: 4,
                   }}
                 />
@@ -76,7 +76,7 @@ const TabLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Feather
               name="heart"
-              size={focused ? 26 : 20}
+              size={focused ? 28 : 22}
               color="black"
             />
           ),
@@ -91,7 +91,7 @@ const TabLayout = () => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: '400',
                   color: 'black',
                 }}
@@ -101,10 +101,10 @@ const TabLayout = () => {
               {focused && (
                 <View
                   style={{
-                    width: 6,
-                    height: 6,
+                    width: 7,
+                    height: 7,
                     backgroundColor: 'black',
-                    borderRadius: 3,
+                    borderRadius: 3.5,
                     marginTop: 4,
                   }}
                 />
@@ -114,7 +114,7 @@ const TabLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Feather
               name="map-pin"
-              size={focused ? 26 : 20}
+              size={focused ? 28 : 22}
               color="black"
             />
           ),
@@ -129,7 +129,7 @@ const TabLayout = () => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: '400',
                   color: 'black',
                 }}
@@ -139,10 +139,10 @@ const TabLayout = () => {
               {focused && (
                 <View
                   style={{
-                    width: 6,
-                    height: 6,
+                    width: 7,
+                    height: 7,
                     backgroundColor: 'black',
-                    borderRadius: 3,
+                    borderRadius: 3.5,
                     marginTop: 4,
                   }}
                 />
@@ -152,7 +152,7 @@ const TabLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Feather
               name="message-square"
-              size={focused ? 26 : 20}
+              size={focused ? 28 : 22}
               color="black"
             />
           ),
@@ -167,7 +167,7 @@ const TabLayout = () => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 13,
                   fontWeight: '400',
                   color: 'black',
                 }}
@@ -177,10 +177,10 @@ const TabLayout = () => {
               {focused && (
                 <View
                   style={{
-                    width: 6,
-                    height: 6,
+                    width: 7,
+                    height: 7,
                     backgroundColor: 'black',
-                    borderRadius: 3,
+                    borderRadius: 3.5,
                     marginTop: 4,
                   }}
                 />
@@ -190,7 +190,7 @@ const TabLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Feather
               name="settings"
-              size={focused ? 26 : 20}
+              size={focused ? 28 : 22}
               color="black"
             />
           ),

@@ -30,7 +30,7 @@ const Settings = () => {
         <TouchableOpacity style={styles.menuItem} onPress={handleTravelPreferences}>
           <View style={styles.menuItemLeft}>
             <View style={styles.iconContainer}>
-              <Map size={20} color="#5f65f7" />
+              <Map size={22} color="#000" />
             </View>
             <Text style={styles.menuItemText}>Travel Preferences</Text>
           </View>
@@ -40,7 +40,7 @@ const Settings = () => {
         <TouchableOpacity style={styles.menuItem} onPress={handlePersonalInfo}>
           <View style={styles.menuItemLeft}>
             <View style={styles.iconContainer}>
-              <User size={20} color="#5f65f7" />
+              <User size={22} color="#000" />
             </View>
             <Text style={styles.menuItemText}>Personal Info</Text>
           </View>
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f0f0',
   },
   headerTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: '600',
     marginLeft: 12,
   },
@@ -90,17 +90,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   iconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     backgroundColor: '#F3F4F6',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
   menuItemText: {
-    fontSize: 16,
-    color: '#333',
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#000',
   },
   logoutButton: {
     flexDirection: 'row',

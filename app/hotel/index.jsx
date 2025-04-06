@@ -7,17 +7,19 @@ import {
     StyleSheet,
     Image,
     FlatList,
-    Alert
+    Alert,
+    StatusBar
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHotelSearch } from './hooks/useHotelSearch';
 import { HotelCard } from './components/HotelCard';
-import { Calendar, Users, Search } from 'lucide-react-native';
+import { Calendar, Users, Search, ChevronLeft } from 'lucide-react-native';
 import { PlaceAutocomplete } from './components/PlaceAutocomplete';
 import { TravelersModal } from './components/TravelersModal';
 import { LinearGradient } from 'expo-linear-gradient';
 import { format } from 'date-fns';
 import { DateSelection } from './components/DateSelection';
+import { router, Stack } from 'expo-router';
 
 // Trending searches data
 const trendingSearches = [
@@ -133,136 +135,179 @@ export default function HotelSearchScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                {/* Search Form */}
-                <View style={styles.searchForm}>
-                    {/* Destination Input */}
-                    <TouchableOpacity
-                        style={styles.inputContainer}
-                        onPress={() => setIsDestinationModalVisible(true)}
+        <>
+            <Stack.Screen 
+                options={{
+                    headerShown: false,
+                }} 
+            />
+            <SafeAreaView style={styles.container} edges={['top', 'right', 'left']}>
+                <StatusBar barStyle="dark-content" />
+                
+                {/* Back Button */}
+                <View style={styles.header}>
+                    <TouchableOpacity 
+                        style={styles.backButton}
+                        onPress={() => router.back()}
                     >
-                        <Text style={styles.inputLabel}>Where to?</Text>
-                        <Text style={styles.inputValue}>
-                            {selectedLocation ? selectedLocation.name : 'Select destination'}
-                        </Text>
-                    </TouchableOpacity>
-
-                    {/* Date Selection */}
-                    <TouchableOpacity
-                        style={styles.inputContainer}
-                        onPress={() => setShowDateSelection(true)}
-                    >
-                        <Text style={styles.inputLabel}>When?</Text>
-                        <Text style={styles.inputValue}>
-                            {selectedDates.startDate && selectedDates.endDate
-                                ? `${format(new Date(selectedDates.startDate), 'MMM d')} - ${format(new Date(selectedDates.endDate), 'MMM d')}`
-                                : 'Select dates'}
-                        </Text>
-                    </TouchableOpacity>
-
-                    {/* Travelers Selection */}
-                    <TouchableOpacity
-                        style={styles.inputContainer}
-                        onPress={() => setIsTravelersModalVisible(true)}
-                    >
-                        <Text style={styles.inputLabel}>Who's going?</Text>
-                        <Text style={styles.inputValue}>
-                            {`${travelers.adults} Adult${travelers.adults !== 1 ? 's' : ''}, ${travelers.children} Child${travelers.children !== 1 ? 'ren' : ''}`}
-                        </Text>
-                    </TouchableOpacity>
-
-                    {/* Search Button */}
-                    <TouchableOpacity
-                        style={styles.searchButton}
-                        onPress={handleSearchPress}
-                        disabled={loading}
-                    >
-                        <Text style={styles.searchButtonText}>
-                            {loading ? 'Searching...' : 'Search Hotels'}
-                        </Text>
+                        <ChevronLeft size={24} color="#333" />
                     </TouchableOpacity>
                 </View>
 
-                {/* Error Message */}
-                {error && (
-                    <View style={styles.errorContainer}>
-                        <Text style={styles.errorText}>{error}</Text>
+                {/* Navigation Tabs */}
+                <View style={styles.navigationBar}>
+                    <TouchableOpacity
+                        style={styles.navItem}
+                        onPress={() => router.push('/places')}
+                    >
+                        <Text style={styles.navText}>Places</Text>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity
+                        style={styles.navItem}
+                        onPress={() => router.push('/flights')}
+                    >
+                        <Text style={styles.navText}>Flights</Text>
+                    </TouchableOpacity>
+                    
+                    <TouchableOpacity
+                        style={[styles.navItem, styles.activeNavItem]}
+                    >
+                        <Text style={[styles.navText, styles.activeNavText]}>Hotels</Text>
+                        <View style={styles.activeIndicator} />
+                    </TouchableOpacity>
+                </View>
+
+                <ScrollView style={styles.content}>
+                    {/* Search Form */}
+                    <View style={styles.searchForm}>
+                        {/* Destination Input */}
+                        <TouchableOpacity
+                            style={styles.inputContainer}
+                            onPress={() => setIsDestinationModalVisible(true)}
+                        >
+                            <Text style={styles.inputLabel}>Where to?</Text>
+                            <Text style={styles.inputValue}>
+                                {selectedLocation ? selectedLocation.name : 'Select destination'}
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Date Selection */}
+                        <TouchableOpacity
+                            style={styles.inputContainer}
+                            onPress={() => setShowDateSelection(true)}
+                        >
+                            <Text style={styles.inputLabel}>When?</Text>
+                            <Text style={styles.inputValue}>
+                                {selectedDates.startDate && selectedDates.endDate
+                                    ? `${format(new Date(selectedDates.startDate), 'MMM d')} - ${format(new Date(selectedDates.endDate), 'MMM d')}`
+                                    : 'Select dates'}
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Travelers Selection */}
+                        <TouchableOpacity
+                            style={styles.inputContainer}
+                            onPress={() => setIsTravelersModalVisible(true)}
+                        >
+                            <Text style={styles.inputLabel}>Who's going?</Text>
+                            <Text style={styles.inputValue}>
+                                {`${travelers.adults} Adult${travelers.adults !== 1 ? 's' : ''}, ${travelers.children} Child${travelers.children !== 1 ? 'ren' : ''}`}
+                            </Text>
+                        </TouchableOpacity>
+
+                        {/* Search Button */}
+                        <TouchableOpacity
+                            style={styles.searchButton}
+                            onPress={handleSearchPress}
+                            disabled={loading}
+                        >
+                            <Text style={styles.searchButtonText}>
+                                {loading ? 'Searching...' : 'Search Hotels'}
+                            </Text>
+                        </TouchableOpacity>
                     </View>
-                )}
 
-                {/* Trending Searches */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Trending Searches</Text>
-                    <FlatList
-                        data={trendingSearches}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.trendingCard}>
-                                <Image source={{ uri: item.image }} style={styles.trendingImage} />
-                                <LinearGradient
-                                    colors={['transparent', 'rgba(0,0,0,0.8)']}
-                                    style={styles.trendingGradient}
-                                />
-                                <View style={styles.trendingContent}>
-                                    <Text style={styles.trendingType}>{item.type}</Text>
-                                    <Text style={styles.trendingTitle}>{item.title}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={(item) => item.title}
-                    />
-                </View>
+                    {/* Error Message */}
+                    {error && (
+                        <View style={styles.errorContainer}>
+                            <Text style={styles.errorText}>{error}</Text>
+                        </View>
+                    )}
 
-                {/* Trending Destinations */}
-                <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Trending Destinations</Text>
-                    <FlatList
-                        data={trendingDestinations}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity style={styles.destinationCard}>
-                                <Image source={{ uri: item.image }} style={styles.destinationImage} />
-                                <LinearGradient
-                                    colors={['transparent', 'rgba(0,0,0,0.8)']}
-                                    style={styles.destinationGradient}
-                                />
-                                <View style={styles.destinationContent}>
-                                    <Text style={styles.destinationCity}>{item.city}</Text>
-                                    <Text style={styles.destinationCountry}>{item.country}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={(item) => item.city}
-                    />
-                </View>
-            </ScrollView>
+                    {/* Trending Searches */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Trending Searches</Text>
+                        <FlatList
+                            data={trendingSearches}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.trendingCard}>
+                                    <Image source={{ uri: item.image }} style={styles.trendingImage} />
+                                    <LinearGradient
+                                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                                        style={styles.trendingGradient}
+                                    />
+                                    <View style={styles.trendingContent}>
+                                        <Text style={styles.trendingType}>{item.type}</Text>
+                                        <Text style={styles.trendingTitle}>{item.title}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={(item) => item.title}
+                        />
+                    </View>
 
-            {/* Modals */}
-            <PlaceAutocomplete
-                visible={isDestinationModalVisible}
-                onClose={() => setIsDestinationModalVisible(false)}
-                onSelect={handleDestinationSelect}
-                suggestions={locationSuggestions}
-                onSearch={fetchLocationSuggestions}
-            />
+                    {/* Trending Destinations */}
+                    <View style={styles.section}>
+                        <Text style={styles.sectionTitle}>Trending Destinations</Text>
+                        <FlatList
+                            data={trendingDestinations}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity style={styles.destinationCard}>
+                                    <Image source={{ uri: item.image }} style={styles.destinationImage} />
+                                    <LinearGradient
+                                        colors={['transparent', 'rgba(0,0,0,0.8)']}
+                                        style={styles.destinationGradient}
+                                    />
+                                    <View style={styles.destinationContent}>
+                                        <Text style={styles.destinationCity}>{item.city}</Text>
+                                        <Text style={styles.destinationCountry}>{item.country}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={(item) => item.city}
+                        />
+                    </View>
+                </ScrollView>
 
-            <DateSelection
-                visible={showDateSelection}
-                onClose={() => setShowDateSelection(false)}
-                onSelect={handleDateSelect}
-                initialDates={selectedDates}
-            />
+                {/* Modals */}
+                <PlaceAutocomplete
+                    visible={isDestinationModalVisible}
+                    onClose={() => setIsDestinationModalVisible(false)}
+                    onSelect={handleDestinationSelect}
+                    suggestions={locationSuggestions}
+                    onSearch={fetchLocationSuggestions}
+                />
 
-            <TravelersModal
-                visible={isTravelersModalVisible}
-                onClose={() => setIsTravelersModalVisible(false)}
-                travelers={travelers}
-                onUpdate={handleTravelersUpdate}
-            />
-        </SafeAreaView>
+                <DateSelection
+                    visible={showDateSelection}
+                    onClose={() => setShowDateSelection(false)}
+                    onSelect={handleDateSelect}
+                    initialDates={selectedDates}
+                />
+
+                <TravelersModal
+                    visible={isTravelersModalVisible}
+                    onClose={() => setIsTravelersModalVisible(false)}
+                    travelers={travelers}
+                    onUpdate={handleTravelersUpdate}
+                />
+            </SafeAreaView>
+        </>
     );
 }
 
@@ -270,6 +315,50 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white'
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+    },
+    backButton: {
+        padding: 4,
+    },
+    navigationBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 40,
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+        backgroundColor: 'white',
+    },
+    navItem: {
+        paddingVertical: 16,
+        position: 'relative',
+        minWidth: 60,
+        alignItems: 'center',
+    },
+    navText: {
+        fontSize: 16,
+        color: '#666',
+        opacity: 0.6,
+    },
+    activeNavText: {
+        color: '#000',
+        fontWeight: '600',
+        opacity: 1,
+    },
+    activeIndicator: {
+        position: 'absolute',
+        bottom: -1,
+        left: 0,
+        right: 0,
+        height: 2,
+        backgroundColor: '#000',
+    },
+    content: {
+        flex: 1,
     },
     searchForm: {
         padding: 16,
@@ -291,16 +380,17 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
     inputLabel: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#666',
-        marginBottom: 4,
+        marginBottom: 8,
     },
     inputValue: {
-        fontSize: 16,
-        color: '#333',
+        fontSize: 18,
+        color: '#000',
+        fontWeight: '600',
     },
     searchButton: {
-        backgroundColor: '#FF385C',
+        backgroundColor: '#000',
         padding: 16,
         borderRadius: 12,
         marginTop: 16,

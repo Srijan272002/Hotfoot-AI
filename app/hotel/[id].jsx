@@ -11,10 +11,10 @@ import {
     Modal
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, router } from 'expo-router';
 import { getHotelDetails } from './api/serpApi';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Star, MapPin, Wifi, Pool, Dumbbell, UtensilsCrossed, Spa, Car, BellRing, Wind } from 'lucide-react-native';
+import { Star, MapPin, Wifi, Pool, Dumbbell, UtensilsCrossed, Spa, Car, BellRing, Wind, ChevronLeft } from 'lucide-react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -93,6 +93,14 @@ export default function HotelDetailsScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
+            {/* Back Button */}
+            <TouchableOpacity 
+                style={styles.backButton} 
+                onPress={() => router.back()}
+            >
+                <ChevronLeft size={24} color="#333" />
+            </TouchableOpacity>
+
             <ScrollView>
                 {/* Image Gallery */}
                 <View style={styles.imageGallery}>
@@ -161,12 +169,17 @@ export default function HotelDetailsScreen() {
                     {hotel.amenities && hotel.amenities.length > 0 && (
                         <View style={styles.amenitiesContainer}>
                             <Text style={styles.sectionTitle}>Amenities</Text>
-                            <FlatList
-                                data={hotel.amenities}
-                                renderItem={renderAmenity}
-                                numColumns={2}
-                                scrollEnabled={false}
-                            />
+                            <View style={styles.amenitiesGrid}>
+                                {hotel.amenities.map((amenity, index) => {
+                                    const IconComponent = amenityIcons[amenity] || Wifi;
+                                    return (
+                                        <View key={index} style={styles.amenityItem}>
+                                            <IconComponent size={24} color="#333" />
+                                            <Text style={styles.amenityText}>{amenity}</Text>
+                                        </View>
+                                    );
+                                })}
+                            </View>
                         </View>
                     )}
 
@@ -342,17 +355,28 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     amenitiesContainer: {
-        marginBottom: 24
+        marginBottom: 24,
+        backgroundColor: '#f8f8f8',
+        padding: 16,
+        borderRadius: 12,
+    },
+    amenitiesGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+        marginHorizontal: -8,
     },
     amenityItem: {
-        width: width / 4 - 16,
+        width: '50%',
+        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16
+        paddingHorizontal: 8,
+        marginBottom: 16,
     },
     amenityText: {
-        marginTop: 8,
-        textAlign: 'center',
-        fontSize: 12
+        marginLeft: 12,
+        fontSize: 14,
+        color: '#333',
     },
     priceContainer: {
         marginBottom: 24
@@ -439,5 +463,22 @@ const styles = StyleSheet.create({
         fontSize: 14,
         color: '#666',
         marginTop: 4,
+    },
+    backButton: {
+        position: 'absolute',
+        top: 16,
+        left: 16,
+        zIndex: 10,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 8,
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
 }); 
