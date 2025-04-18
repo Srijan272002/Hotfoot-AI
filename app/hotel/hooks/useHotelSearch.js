@@ -1,27 +1,27 @@
-import { useState, useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { searchHotels, getPlaceSuggestions } from '../api/serpApi';
 import { getDestinationImages } from '../api/pixabayApi';
 import debounce from 'lodash/debounce';
 import { router } from 'expo-router';
+import useHotelStore from '../../store/hotelStore';
 
 const DEBOUNCE_DELAY = 300; // milliseconds
 const MIN_SEARCH_LENGTH = 2;
 
 export const useHotelSearch = () => {
-    const [searchParams, setSearchParams] = useState({
-        location: '',
-        checkIn: null,
-        checkOut: null,
-        guests: {
-            adults: 2,
-            children: 0
-        }
-    });
-    const [searchResults, setSearchResults] = useState([]);
-    const [locationSuggestions, setLocationSuggestions] = useState([]);
-    const [destinationImages, setDestinationImages] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    const {
+        searchParams,
+        searchResults,
+        locationSuggestions,
+        loading,
+        error,
+        setSearchParams,
+        setSearchResults,
+        setLocationSuggestions,
+        setLoading,
+        setError,
+        clearSearchResults
+    } = useHotelStore();
     
     // Keep track of the latest request
     const lastRequestId = useRef(0);
@@ -59,13 +59,8 @@ export const useHotelSearch = () => {
             } else {
                 setSearchResults(results);
                 setError(null);
-                // Navigate to results screen with the search results
-                router.push({
-                    pathname: '/hotel/results',
-                    params: {
-                        searchResults: JSON.stringify(results)
-                    }
-                });
+                // Navigate to results screen
+                router.push('/hotel/results');
             }
         } catch (err) {
             console.error('Search error:', err);
@@ -74,7 +69,7 @@ export const useHotelSearch = () => {
         } finally {
             setLoading(false);
         }
-    }, [validateApiKeys]);
+    }, [validateApiKeys, setError, setLoading, setSearchResults]);
 
     // Format location data with images
     const formatLocationData = useCallback(async (suggestion) => {
@@ -130,7 +125,7 @@ export const useHotelSearch = () => {
         } finally {
             setLoading(false);
         }
-    }, [validateApiKeys]);
+    }, [validateApiKeys, setLocationSuggestions, setLoading, setError]);
 
     // Debounced version of fetchLocationSuggestions
     const debouncedFetchSuggestions = useCallback(
@@ -138,26 +133,16 @@ export const useHotelSearch = () => {
         [fetchLocationSuggestions]
     );
 
-    const clearError = useCallback(() => {
-        setError(null);
-    }, []);
-
-    const clearResults = useCallback(() => {
-        setSearchResults([]);
-        setLocationSuggestions([]);
-        setError(null);
-    }, []);
-
     return {
         searchParams,
         searchResults,
         locationSuggestions,
-        destinationImages,
         loading,
         error,
         handleSearch,
         fetchLocationSuggestions: debouncedFetchSuggestions,
-        clearError,
-        clearResults
+        setSearchParams,
+        clearSearchResults,
+        setError
     };
 }; 

@@ -1,30 +1,33 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
 import { HotelCard } from './components/HotelCard';
+import useHotelStore from '../store/hotelStore';
 
 export default function HotelSearchResultsScreen() {
-    const { searchResults } = useLocalSearchParams();
-    const results = searchResults ? JSON.parse(searchResults) : [];
+    const { searchResults, error } = useHotelStore();
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
                 <View style={styles.header}>
                     <Text style={styles.title}>Search Results</Text>
-                    <Text style={styles.resultCount}>{results.length} hotels found</Text>
+                    <Text style={styles.resultCount}>{searchResults.length} hotels found</Text>
                 </View>
 
                 <View style={styles.resultsContainer}>
-                    {results.length > 0 ? (
-                        results.map((hotel, index) => (
-                            <HotelCard key={index} hotel={hotel} />
+                    {searchResults.length > 0 ? (
+                        searchResults.map((hotel, index) => (
+                            <HotelCard key={hotel.id || index} hotel={hotel} />
                         ))
                     ) : (
                         <View style={styles.noResultsContainer}>
-                            <Text style={styles.noResultsText}>No hotels found</Text>
-                            <Text style={styles.noResultsSubtext}>Try adjusting your search criteria</Text>
+                            <Text style={styles.noResultsText}>
+                                {error || 'No hotels found'}
+                            </Text>
+                            <Text style={styles.noResultsSubtext}>
+                                Try adjusting your search criteria
+                            </Text>
                         </View>
                     )}
                 </View>

@@ -1,9 +1,12 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
-import { Star, MapPin } from 'lucide-react-native';
+import { Star, MapPin, Heart } from 'lucide-react-native';
+import useHotelStore from '../../store/hotelStore';
 
 export const HotelCard = ({ hotel }) => {
+    const { favoriteHotels, addToFavorites, removeFromFavorites } = useHotelStore();
+    
     const {
         id,
         name,
@@ -16,6 +19,8 @@ export const HotelCard = ({ hotel }) => {
         propertyToken
     } = hotel;
 
+    const isFavorite = favoriteHotels.some(h => h.id === id);
+
     // Format price to currency format
     const formatPrice = (priceValue) => {
         if (!priceValue) return '$0';
@@ -23,6 +28,15 @@ export const HotelCard = ({ hotel }) => {
             return priceValue.startsWith('$') ? priceValue : `$${priceValue}`;
         }
         return `$${priceValue}`;
+    };
+
+    const handleFavoritePress = (e) => {
+        e.preventDefault(); // Prevent navigation
+        if (isFavorite) {
+            removeFromFavorites(id);
+        } else {
+            addToFavorites(hotel);
+        }
     };
 
     return (
@@ -39,6 +53,16 @@ export const HotelCard = ({ hotel }) => {
                     style={styles.image}
                     resizeMode="cover"
                 />
+                <TouchableOpacity 
+                    style={styles.favoriteButton}
+                    onPress={handleFavoritePress}
+                >
+                    <Heart 
+                        size={24} 
+                        color={isFavorite ? '#FF385C' : '#fff'} 
+                        fill={isFavorite ? '#FF385C' : 'none'}
+                    />
+                </TouchableOpacity>
                 <View style={styles.content}>
                     <View style={styles.header}>
                         <Text style={styles.name} numberOfLines={1}>
@@ -118,6 +142,15 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: 200,
+    },
+    favoriteButton: {
+        position: 'absolute',
+        top: 12,
+        right: 12,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        borderRadius: 20,
+        padding: 8,
+        zIndex: 1,
     },
     content: {
         padding: 12
